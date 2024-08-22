@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant/common/screen/seed_data/seed_data_screen.dart';
 import 'package:restaurant/di/injector.dart';
 import 'package:restaurant/features/food_items/domain/entities/food_item_entity.dart';
 import 'package:restaurant/features/food_items/presentation/bloc/food_items_bloc.dart';
@@ -15,7 +16,14 @@ class FoodItemsScreen extends StatelessWidget {
         return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
             middle: const Text('Food Items'),
-            // Add a search bar using CupertinoSearchTextField
+            // seed data screen,
+            leading: CupertinoButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                showSeedDataScreen(context);
+              },
+              child: const Icon(CupertinoIcons.refresh),
+            ),
             trailing: CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
@@ -60,6 +68,13 @@ class FoodItemsScreen extends StatelessWidget {
       context: context,
       builder: (_) => BlocProvider<FoodItemsBloc>(
           create: (__) => context.read(), child: const CupertinoSearchView()),
+    );
+  }
+
+  void showSeedDataScreen(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => SeedDataScreen(),
     );
   }
 }
