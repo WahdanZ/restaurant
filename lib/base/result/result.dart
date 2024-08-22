@@ -8,6 +8,9 @@ import '../error/failure.dart';
 sealed class CustomResult<T extends Object> {
   const CustomResult();
 
+  factory CustomResult.success(T result) = Success<T>;
+  factory CustomResult.failure(NetworkFailure error) = Failure<T>;
+
   /// Executes the appropriate function based on whether the result is a success or a failure.
   ///
   /// - [success]: The function to execute if the result is a [Success].
@@ -24,6 +27,20 @@ sealed class CustomResult<T extends Object> {
       case Failure<T> failureResult:
         return failure(failureResult.error);
     }
+  }
+
+  T? getOrNull() {
+    return when(
+      success: (data) => data,
+      failure: (_) => null,
+    );
+  }
+
+  NetworkFailure? getErrorOrNull() {
+    return when(
+      success: (_) => null,
+      failure: (error) => error,
+    );
   }
 }
 

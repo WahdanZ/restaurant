@@ -1,25 +1,25 @@
-import '../../domain/entities/food_item_entity.dart';
+import 'package:restaurant/base/index.dart';
+import 'package:restaurant/base/remote/firebase_network_task.dart';
+
 import '../models/food_item.dart';
 
 abstract class FoodItemRemoteDataSource {
-  Future<List<FoodItemEntity>> getFoodItems();
+  Future<CustomResult<List<FoodItem>>> getFoodItems();
 }
 
 class FoodItemFireStoreRemoteDataSourceImpl
     implements FoodItemRemoteDataSource {
+  final NetworkTaskManager networkTask;
+
+  FoodItemFireStoreRemoteDataSourceImpl({required this.networkTask});
+
   @override
-  Future<List<FoodItemEntity>> getFoodItems() async {
-    final querySnapshot = await foodItemCollectionRef.get();
-    return querySnapshot.docs.map((doc) {
-      final foodItem = doc.data;
-      return FoodItemEntity(
-        id: doc.id,
-        name: foodItem.name,
-        description: foodItem.description,
-        price: foodItem.price,
-        imageUrl: foodItem.imageUrl,
-        category: foodItem.category,
-      );
-    }).toList();
+  Future<CustomResult<List<FoodItem>>> getFoodItems() async {
+    final task = FirebaseNetworkTask(() async {
+      final querySnapshot = await foodItemCollectionRef.get();
+      final foodItems = querySnapshot.docs;
+      return foodItems.map((foodItem) => foodItem.data).toList();
+    });
+    return networkTask.executeTask(task);
   }
 }

@@ -3,6 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:restaurant/features/food_items/data/data_source/food_item_remote_data_source.dart';
 import 'package:restaurant/features/food_items/data/models/food_item.dart';
 import 'package:restaurant/features/food_items/domain/repositories/food_item_repository.dart';
+import 'package:restaurant/features/food_items/domain/usecases/get_food_items_use_case.dart';
 
 @injectable
 class MockFoodItemRepository extends Mock implements FoodItemRepository {}
@@ -21,3 +22,6 @@ class MockFoodItemQueryDocumentSnapshot extends Mock
 @injectable
 class MockFoodItemRemoteDataSource extends Mock
     implements FoodItemRemoteDataSource {}
+
+@injectable
+class MockGetFoodItemsUseCase extends Mock implements GetFoodItemsUseCase {}

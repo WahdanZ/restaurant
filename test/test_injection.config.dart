@@ -34,6 +34,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i173.MockFoodItemQueryDocumentSnapshot());
     gh.factory<_i173.MockFoodItemRemoteDataSource>(
         () => _i173.MockFoodItemRemoteDataSource());
+    gh.factory<_i173.MockGetFoodItemsUseCase>(
+        () => _i173.MockGetFoodItemsUseCase());
     return this;
   }
 }
