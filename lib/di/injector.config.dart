@@ -12,6 +12,10 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../features/food_items/domain/repositories/food_item_repository.dart'
+    as _i185;
+import '../features/food_items/domain/usecases/get_food_items_use_case.dart'
+    as _i299;
 import 'app_module.dart' as _i460;
 
 const String _prod = 'prod';
@@ -41,6 +45,8 @@ _i174.GetIt $initGetIt(
       _dev,
     },
   );
+  gh.factory<_i299.GetFoodItemsUseCase>(
+      () => _i299.GetFoodItemsUseCase(gh<_i185.FoodItemRepository>()));
   return getIt;
 }
 
