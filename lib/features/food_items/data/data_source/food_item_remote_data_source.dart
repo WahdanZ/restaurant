@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:restaurant/base/index.dart';
 import 'package:restaurant/base/remote/firebase_network_task.dart';
 
@@ -7,6 +8,7 @@ abstract class FoodItemRemoteDataSource {
   Future<CustomResult<List<FoodItem>>> getFoodItems();
 }
 
+@LazySingleton(as: FoodItemRemoteDataSource)
 class FoodItemFireStoreRemoteDataSourceImpl
     implements FoodItemRemoteDataSource {
   final NetworkTaskManager networkTask;

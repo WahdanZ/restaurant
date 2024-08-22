@@ -29,7 +29,6 @@ abstract class NetworkTask<T extends Object> {
     try {
       final response =
           useIsolate ? await Isolate.run(() => _task()) : await _task();
-      logger.i('Response type: ${T.runtimeType}');
       return Success<T>(response);
     } catch (error, stackTrace) {
       logger.e('Error occurred: $error', error: error, stackTrace: stackTrace);

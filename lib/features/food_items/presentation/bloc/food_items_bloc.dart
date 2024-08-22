@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:restaurant/base/domain/interactors/use_case.dart';
+import 'package:restaurant/base/index.dart';
 import 'package:restaurant/features/food_items/domain/entities/food_item_entity.dart';
 import 'package:restaurant/features/food_items/domain/usecases/get_food_items_use_case.dart';
 
@@ -26,14 +26,17 @@ class FoodItemsBloc extends Bloc<FoodItemsEvent, FoodItemsState> {
       final foodItems = await getFoodItemsUseCase.execute(params: Any());
       foodItems.when(
         success: (items) {
+          logger.i('Food items loaded: $items');
           allFoodItems = items;
           emit(FoodItemsState.loaded(items));
         },
         failure: (error) {
+          logger.e('Failed to load food items: $error');
           emit(const FoodItemsState.error());
         },
       );
-    } catch (_) {
+    } catch (e) {
+      logger.e('Failed to load food items', error: e);
       emit(const FoodItemsState.error());
     }
   }

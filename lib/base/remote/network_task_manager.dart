@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:injectable/injectable.dart';
+
 import '../index.dart';
 
 /// Singleton class to manage the execution of network tasks.
 /// Provides mechanisms to lock and unlock task execution,
 /// allowing for the pausing and resuming of network requests.
+@LazySingleton()
 class NetworkTaskManager {
   NetworkTaskManager._privateConstructor();
 

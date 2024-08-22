@@ -13,6 +13,7 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../base/index.dart' as _i852;
+import '../base/remote/network_task_manager.dart' as _i148;
 import '../features/food_items/data/data_source/food_item_remote_data_source.dart'
     as _i587;
 import '../features/food_items/data/mapper/food_item_mapper.dart' as _i237;
@@ -41,11 +42,12 @@ _i174.GetIt $initGetIt(
   );
   final appModule = _$AppModule();
   gh.factory<_i237.FoodItemMapper>(() => _i237.FoodItemMapper());
+  gh.lazySingleton<_i148.NetworkTaskManager>(() => _i148.NetworkTaskManager());
   gh.lazySingleton<_i361.Dio>(
     () => appModule.dio,
     instanceName: 'dio_client',
   );
-  gh.factory<_i587.FoodItemFireStoreRemoteDataSourceImpl>(() =>
+  gh.lazySingleton<_i587.FoodItemRemoteDataSource>(() =>
       _i587.FoodItemFireStoreRemoteDataSourceImpl(
           networkTask: gh<_i852.NetworkTaskManager>()));
   gh.lazySingleton<String>(
@@ -56,12 +58,12 @@ _i174.GetIt $initGetIt(
       _dev,
     },
   );
-  gh.factory<_i299.GetFoodItemsUseCase>(
-      () => _i299.GetFoodItemsUseCase(gh<_i185.FoodItemRepository>()));
-  gh.factory<_i661.FoodItemRepositoryImpl>(() => _i661.FoodItemRepositoryImpl(
+  gh.lazySingleton<_i185.FoodItemRepository>(() => _i661.FoodItemRepositoryImpl(
         remoteDataSource: gh<_i587.FoodItemRemoteDataSource>(),
         foodItemMapper: gh<_i237.FoodItemMapper>(),
       ));
+  gh.factory<_i299.GetFoodItemsUseCase>(
+      () => _i299.GetFoodItemsUseCase(gh<_i185.FoodItemRepository>()));
   gh.factory<_i798.FoodItemsBloc>(() => _i798.FoodItemsBloc(
       getFoodItemsUseCase: gh<_i299.GetFoodItemsUseCase>()));
   return getIt;
