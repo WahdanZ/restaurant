@@ -26,6 +26,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i173.MockFoodItemRepository>(
         () => _i173.MockFoodItemRepository());
+    gh.factory<_i173.MockFoodItemCollection>(
+        () => _i173.MockFoodItemCollection());
+    gh.factory<_i173.MockFoodItemQuerySnapshot>(
+        () => _i173.MockFoodItemQuerySnapshot());
+    gh.factory<_i173.MockFoodItemQueryDocumentSnapshot>(
+        () => _i173.MockFoodItemQueryDocumentSnapshot());
+    gh.factory<_i173.MockFoodItemRemoteDataSource>(
+        () => _i173.MockFoodItemRemoteDataSource());
     return this;
   }
 }

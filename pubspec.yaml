@@ -63,6 +63,7 @@ dev_dependencies:
   retrofit_generator: ">=7.0.0 <8.0.0"
   mocktail: ^1.0.4
   bdd_widget_test: ^1.7.4
+  cloud_firestore_odm_generator: ^1.0.0-dev.88
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

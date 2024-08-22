@@ -11,7 +11,7 @@ void main() {
   late GetFoodItemsUseCase getFoodItemsUseCase;
 
   setUpAll(() {
-      configureTestDependencies()
+    configureTestDependencies();
   });
   setUp(() {
     mockFoodItemRepository = injectMock();
@@ -38,7 +38,6 @@ void main() {
   ];
 
   test('should return list of food items from the repository', () async {
-    // Arrange
     when(() => mockFoodItemRepository.getFoodItems())
         .thenAnswer((_) async => foodItems);
 
