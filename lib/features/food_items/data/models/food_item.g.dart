@@ -59,7 +59,7 @@ class _$FoodItemCollectionReference extends _$FoodItemQuery
     firestore ??= FirebaseFirestore.instance;
 
     return _$FoodItemCollectionReference._(
-      firestore.collection('users').withConverter(
+      firestore.collection('food_items').withConverter(
             fromFirestore: FoodItemCollectionReference.fromFirestore,
             toFirestore: FoodItemCollectionReference.toFirestore,
           ),
@@ -1575,7 +1575,7 @@ FoodItem _$FoodItemFromJson(Map<String, dynamic> json) => FoodItem(
       name: json['name'] as String,
       description: json['description'] as String,
       price: (json['price'] as num).toDouble(),
-      imageUrl: json['imageUrl'] as String,
+      imageUrl: json['image_url'] as String,
       category: json['category'] as String,
     );
 
@@ -1583,7 +1583,7 @@ const _$FoodItemFieldMap = <String, String>{
   'name': 'name',
   'description': 'description',
   'price': 'price',
-  'imageUrl': 'imageUrl',
+  'imageUrl': 'image_url',
   'category': 'category',
 };
 
@@ -1605,6 +1605,6 @@ Map<String, dynamic> _$FoodItemToJson(FoodItem instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'price': instance.price,
-      'imageUrl': instance.imageUrl,
+      'image_url': instance.imageUrl,
       'category': instance.category,
     };

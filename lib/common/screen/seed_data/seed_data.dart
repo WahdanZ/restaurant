@@ -1,49 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faker/faker.dart';
-import 'package:restaurant/base/logger/logger.dart';
+
+import '../../../base/index.dart';
 
 class SeedData {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final faker = Faker();
 
-  Future<void> resetAndSeedData() async {
-    await _clearCollection('food_items');
-    await _clearCollection('tables');
-    await _clearCollection('table_reservations');
+  final List<String> foodKeywords = [
+    'pizza',
+    'burger',
+    'salad',
+    'pasta',
+    'sushi',
+    'steak',
+    'dessert',
+    'ice cream',
+    'chicken',
+    'fruit',
+  ];
 
-    await seedFoodItems();
-    await seedTables();
-    await seedTableReservations();
-
-    logger.i('Data reset and seeded successfully.');
-  }
-
-  Future<void> _clearCollection(String collectionPath) async {
-    final collection = firestore.collection(collectionPath);
-    final snapshots = await collection.get();
-    for (var doc in snapshots.docs) {
-      await doc.reference.delete();
-    }
-    logger.i('Cleared $collectionPath collection.');
+  String getRandomFoodImageUrl(String keyword) {
+    return 'https://loremflickr.com/320/240/$keyword';
   }
 
   Future<void> seedFoodItems() async {
-    logger.i('Seeding 50 food items...');
     final foodItemsCollection = firestore.collection('food_items');
 
     for (int i = 0; i < 50; i++) {
+      // Pick a random keyword from the list
+      final randomKeyword =
+          foodKeywords[faker.randomGenerator.integer(foodKeywords.length)];
+
       final foodItem = {
         'name': faker.food.dish(),
         'description': faker.lorem.sentence(),
-        'price': faker.randomGenerator.decimal(min: 5, scale: 50),
-        'image_url': 'https://via.placeholder.com/150', // Placeholder image
+        'price': faker.randomGenerator.integer(50, min: 5),
+        'image_url': getRandomFoodImageUrl(randomKeyword),
         'category': faker.food.cuisine(),
       };
+
       await foodItemsCollection.add(foodItem);
-      logger.d('Seeded food item: $foodItem');
     }
 
-    logger.i('Seeded 50 food items.');
+    logger.i('Seeded 50 food items with random images.');
   }
 
   Future<void> seedTables() async {
@@ -75,5 +75,26 @@ class SeedData {
     }
 
     logger.i('Seeded 30 fake reservations.');
+  }
+
+  Future<void> resetAndSeedData() async {
+    await _clearCollection('food_items');
+    await _clearCollection('tables');
+    await _clearCollection('table_reservations');
+
+    await seedFoodItems();
+    await seedTables();
+    await seedTableReservations();
+
+    logger.i('Data reset and seeded successfully.');
+  }
+
+  Future<void> _clearCollection(String collectionPath) async {
+    final collection = firestore.collection(collectionPath);
+    final snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+    logger.i('Cleared $collectionPath collection.');
   }
 }

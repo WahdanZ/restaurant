@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant/base/index.dart';
 import 'package:restaurant/common/screen/seed_data/seed_data_screen.dart';
 import 'package:restaurant/di/injector.dart';
-import 'package:restaurant/features/food_items/domain/entities/food_item_entity.dart';
 import 'package:restaurant/features/food_items/presentation/bloc/food_items_bloc.dart';
+import 'package:restaurant/features/food_items/presentation/screens/search_screen.dart';
+import 'package:restaurant/features/food_items/presentation/widgets/food_item_widget.dart';
 
 class FoodItemsScreen extends StatelessWidget {
   const FoodItemsScreen({super.key});
@@ -16,13 +18,12 @@ class FoodItemsScreen extends StatelessWidget {
         return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
             middle: const Text('Food Items'),
-            // seed data screen,
             leading: CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
                 showSeedDataScreen(context);
               },
-              child: const Icon(CupertinoIcons.refresh),
+              child: const Icon(CupertinoIcons.selection_pin_in_out),
             ),
             trailing: CupertinoButton(
               padding: EdgeInsets.zero,
@@ -35,25 +36,50 @@ class FoodItemsScreen extends StatelessWidget {
           child: SafeArea(
             child: BlocBuilder<FoodItemsBloc, FoodItemsState>(
               builder: (context, state) {
-                return state.when(
-                  initial: () =>
-                      const Center(child: Text('Start by searching...')),
-                  loading: () =>
-                      const Center(child: CupertinoActivityIndicator()),
-                  loaded: (foodItems) {
-                    if (foodItems.isEmpty) {
-                      return const Center(child: Text('No food items found'));
-                    }
-                    return ListView.builder(
-                      itemCount: foodItems.length,
-                      itemBuilder: (context, index) {
-                        final foodItem = foodItems[index];
-                        return CustomCupertinoListTile(foodItem: foodItem);
+                final crossAxisCount = MediaQuery.of(context).size.width ~/ 200;
+                return CustomScrollView(
+                  slivers: [
+                    CupertinoSliverRefreshControl(
+                      onRefresh: () async {
+                        logger.d('Refreshed');
+                        context
+                            .read<FoodItemsBloc>()
+                            .add(const FoodItemsEvent.started());
+                        await Future.delayed(const Duration(seconds: 2));
                       },
-                    );
-                  },
-                  error: () =>
-                      const Center(child: Text('Failed to load food items')),
+                    ),
+                    state.maybeWhen(
+                      loaded: (items) {
+                        return SliverGrid(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final foodItem = items[index];
+                              return FoodItemWidget(foodItem: foodItem);
+                            },
+                            childCount: items.length,
+                          ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 8,
+                          ),
+                        );
+                      },
+                      loading: () {
+                        return const SliverFillRemaining(
+                          child: Center(child: CupertinoActivityIndicator()),
+                        );
+                      },
+                      error: () {
+                        return const SliverFillRemaining(
+                          child:
+                              Center(child: Text('Failed to load food items')),
+                        );
+                      },
+                      orElse: () => SliverFillRemaining(),
+                    ),
+                  ],
                 );
               },
             ),
@@ -71,79 +97,13 @@ class FoodItemsScreen extends StatelessWidget {
     );
   }
 
-  void showSeedDataScreen(BuildContext context) {
-    showCupertinoModalPopup(
+  void showSeedDataScreen(BuildContext context) async {
+    await showCupertinoModalPopup(
       context: context,
       builder: (_) => SeedDataScreen(),
     );
-  }
-}
-
-class CupertinoSearchView extends StatelessWidget {
-  const CupertinoSearchView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: const Text('Search Food Items'),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () => Navigator.pop(context),
-          child: const Icon(CupertinoIcons.back),
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              CupertinoSearchTextField(
-                onChanged: (query) {
-                  context
-                      .read<FoodItemsBloc>()
-                      .add(FoodItemsEvent.searchFoodItems(query));
-                },
-                placeholder: 'Search food items...',
-              ),
-              Expanded(
-                child: BlocBuilder<FoodItemsBloc, FoodItemsState>(
-                  builder: (context, state) {
-                    return state.when(
-                      loading: () =>
-                          const Center(child: CupertinoActivityIndicator()),
-                      loaded: (foodItems) => ListView.builder(
-                        itemCount: foodItems.length,
-                        itemBuilder: (context, index) {
-                          final foodItem = foodItems[index];
-                          return CustomCupertinoListTile(foodItem: foodItem);
-                        },
-                      ),
-                      error: () => const Center(child: Text('No items found')),
-                      initial: () => const SizedBox.shrink(),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomCupertinoListTile extends StatelessWidget {
-  final FoodItemEntity foodItem;
-
-  const CustomCupertinoListTile({super.key, required this.foodItem});
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoListTile(
-      leading: Image.network(foodItem.imageUrl),
-      title: Text(foodItem.name),
-      subtitle: Text('\$${foodItem.price}'),
-    );
+    if (context.mounted) {
+      context.read<FoodItemsBloc>().add(const FoodItemsEvent.started());
+    }
   }
 }

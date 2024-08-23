@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'food_item.g.dart';
 
-@Collection<FoodItem>('users')
+@Collection<FoodItem>('food_items')
 final foodItemCollectionRef = FoodItemCollectionReference();
 
 @JsonSerializable()
@@ -20,6 +20,7 @@ class FoodItem {
   final String name;
   final String description;
   final double price;
+  @JsonKey(name: 'image_url')
   final String imageUrl;
   final String category;
 
