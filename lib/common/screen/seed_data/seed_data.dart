@@ -6,37 +6,21 @@ import '../../../base/index.dart';
 class SeedData {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final faker = Faker();
-
-  final List<String> foodKeywords = [
-    'pizza',
-    'burger',
-    'salad',
-    'pasta',
-    'sushi',
-    'steak',
-    'dessert',
-    'ice cream',
-    'chicken',
-    'fruit',
-  ];
-
   String getRandomFoodImageUrl(String keyword) {
-    return 'https://loremflickr.com/320/240/$keyword';
+    return 'https://loremflickr.com/320/240/food,$keyword';
   }
 
   Future<void> seedFoodItems() async {
     final foodItemsCollection = firestore.collection('food_items');
 
     for (int i = 0; i < 50; i++) {
-      // Pick a random keyword from the list
-      final randomKeyword =
-          foodKeywords[faker.randomGenerator.integer(foodKeywords.length)];
+      final name = faker.food.dish();
 
       final foodItem = {
-        'name': faker.food.dish(),
+        'name': name,
         'description': faker.lorem.sentence(),
         'price': faker.randomGenerator.integer(50, min: 5),
-        'image_url': getRandomFoodImageUrl(randomKeyword),
+        'image_url': getRandomFoodImageUrl(name.replaceAll(' ', ',')),
         'category': faker.food.cuisine(),
       };
 
