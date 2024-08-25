@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:restaurant/features/food_items/presentation/screens/food_items_screen.dart';
+import 'package:restaurant/features/table_reservation/presentation/pages/table_reservation_screen.dart';
 import 'package:restaurant/route/route.dart';
 
 import 'base/index.dart';
@@ -62,7 +63,7 @@ class HomePage extends StatelessWidget {
             );
           case 1:
             return CupertinoTabView(
-              builder: (context) => const SizedBox(),
+              builder: (context) => const TableReservationScreen(),
             );
           default:
             return CupertinoTabView(

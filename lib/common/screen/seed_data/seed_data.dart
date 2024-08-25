@@ -36,6 +36,7 @@ class SeedData {
     for (int i = 1; i <= 10; i++) {
       final table = {
         'id': i.toString(),
+        'name': 'Table $i',
         'chairs': faker.randomGenerator.integer(6, min: 2),
       };
       await tablesCollection.add(table);

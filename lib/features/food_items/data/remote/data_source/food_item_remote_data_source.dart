@@ -1,8 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:restaurant/base/index.dart';
 import 'package:restaurant/base/remote/firebase_network_task.dart';
-
-import '../models/food_item.dart';
+import 'package:restaurant/features/food_items/data/models/food_item.dart';
 
 abstract class FoodItemRemoteDataSource {
   Future<CustomResult<List<FoodItem>>> getFoodItems();

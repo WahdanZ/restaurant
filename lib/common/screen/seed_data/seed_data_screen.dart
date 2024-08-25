@@ -36,10 +36,11 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                     : () async {
                         await seedData.seedFoodItems();
                         if (mounted) {
+                          _showSnackBar(context, 'Seeded 50 Food Items!');
+
                           setState(() {
                             isSeeding = false;
                           });
-                          _showSnackBar(context, 'Seeded 50 Food Items!');
                         }
                       },
                 child: const Text('Seed Food Items'),
