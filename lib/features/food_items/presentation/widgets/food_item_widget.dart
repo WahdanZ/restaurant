@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:restaurant/features/food_items/domain/entities/food_item_entity.dart';
 
 class FoodItemWidget extends StatelessWidget {
@@ -10,19 +11,7 @@ class FoodItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showCupertinoModalPopup(
-          context: context,
-          builder: (popContext) => CupertinoActionSheet(
-            title: Text(foodItem.name),
-            message: Text(foodItem.description),
-            actions: [
-              CupertinoActionSheetAction(
-                onPressed: () => Navigator.pop(popContext),
-                child: const Text('Close'),
-              ),
-            ],
-          ),
-        );
+        context.go('/food_items/${foodItem.id}');
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),

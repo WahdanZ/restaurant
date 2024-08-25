@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:restaurant/common/screen/seed_data/seed_data.dart';
 
 class SeedDataScreen extends StatefulWidget {
+  const SeedDataScreen({super.key});
   @override
   State<SeedDataScreen> createState() => _SeedDataScreenState();
 }
@@ -13,7 +14,7 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         middle: Text('Seed Data'),
       ),
       child: SafeArea(
@@ -30,17 +31,21 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                 const Text('Seeding Data...'),
               ],
               CupertinoButton.filled(
-                child: Text('Seed Food Items'),
                 onPressed: isSeeding
                     ? null
                     : () async {
                         await seedData.seedFoodItems();
-                        _showSnackBar(context, 'Seeded 50 Food Items!');
+                        if (mounted) {
+                          setState(() {
+                            isSeeding = false;
+                          });
+                          _showSnackBar(context, 'Seeded 50 Food Items!');
+                        }
                       },
+                child: const Text('Seed Food Items'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CupertinoButton.filled(
-                child: Text('Seed Tables'),
                 onPressed: isSeeding
                     ? null
                     : () async {
@@ -48,12 +53,14 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                           isSeeding = true;
                         });
                         await seedData.seedTables();
-                        _showSnackBar(context, 'Seeded 10 Tables!');
+                        if (mounted) {
+                          _showSnackBar(context, 'Seeded 10 Tables!');
+                        }
                       },
+                child: const Text('Seed Tables'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CupertinoButton.filled(
-                child: Text('Seed Reservations'),
                 onPressed: isSeeding
                     ? null
                     : () async {
@@ -63,10 +70,10 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                         await seedData.seedTableReservations();
                         _showSnackBar(context, 'Seeded 30 Reservations!');
                       },
+                child: const Text('Seed Reservations'),
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               CupertinoButton(
-                child: Text('Reset and Seed All Data'),
                 color: CupertinoColors.systemRed,
                 onPressed: isSeeding
                     ? null
@@ -77,6 +84,7 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                         await seedData.resetAndSeedData();
                         _showSnackBar(context, 'All Data Reset and Seeded!');
                       },
+                child: const Text('Reset and Seed All Data'),
               ),
             ],
           ),

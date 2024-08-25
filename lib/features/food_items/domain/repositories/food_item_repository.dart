@@ -3,4 +3,5 @@ import 'package:restaurant/features/food_items/domain/entities/food_item_entity.
 
 abstract class FoodItemRepository {
   Future<CustomResult<List<FoodItemEntity>>> getFoodItems();
+  Future<CustomResult<FoodItemEntity>> getFoodItemById(String id);
 }

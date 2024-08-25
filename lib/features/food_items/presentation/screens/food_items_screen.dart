@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant/base/index.dart';
 import 'package:restaurant/common/screen/seed_data/seed_data_screen.dart';
 import 'package:restaurant/di/injector.dart';
-import 'package:restaurant/features/food_items/presentation/bloc/food_items_bloc.dart';
+import 'package:restaurant/features/food_items/presentation/bloc/food_items/food_items_bloc.dart';
 import 'package:restaurant/features/food_items/presentation/screens/search_screen.dart';
 import 'package:restaurant/features/food_items/presentation/widgets/food_item_widget.dart';
 
@@ -77,7 +77,7 @@ class FoodItemsScreen extends StatelessWidget {
                               Center(child: Text('Failed to load food items')),
                         );
                       },
-                      orElse: () => SliverFillRemaining(),
+                      orElse: () => const SliverFillRemaining(),
                     ),
                   ],
                 );
@@ -100,7 +100,7 @@ class FoodItemsScreen extends StatelessWidget {
   void showSeedDataScreen(BuildContext context) async {
     await showCupertinoModalPopup(
       context: context,
-      builder: (_) => SeedDataScreen(),
+      builder: (_) => const SeedDataScreen(),
     );
     if (context.mounted) {
       context.read<FoodItemsBloc>().add(const FoodItemsEvent.started());

@@ -21,9 +21,14 @@ import '../features/food_items/data/repositories/food_item_repository_impl.dart'
     as _i661;
 import '../features/food_items/domain/repositories/food_item_repository.dart'
     as _i185;
+import '../features/food_items/domain/usecases/get_food_item_details.dart'
+    as _i614;
 import '../features/food_items/domain/usecases/get_food_items_use_case.dart'
     as _i299;
-import '../features/food_items/presentation/bloc/food_items_bloc.dart' as _i798;
+import '../features/food_items/presentation/bloc/food_item_details/food_items_details_bloc.dart'
+    as _i164;
+import '../features/food_items/presentation/bloc/food_items/food_items_bloc.dart'
+    as _i618;
 import 'app_module.dart' as _i460;
 
 const String _prod = 'prod';
@@ -64,7 +69,11 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i299.GetFoodItemsUseCase>(
       () => _i299.GetFoodItemsUseCase(gh<_i185.FoodItemRepository>()));
-  gh.factory<_i798.FoodItemsBloc>(() => _i798.FoodItemsBloc(
+  gh.factory<_i614.GetFoodItemDetailsUseCase>(
+      () => _i614.GetFoodItemDetailsUseCase(gh<_i185.FoodItemRepository>()));
+  gh.factory<_i164.FoodItemsDetailsBloc>(
+      () => _i164.FoodItemsDetailsBloc(gh<_i614.GetFoodItemDetailsUseCase>()));
+  gh.factory<_i618.FoodItemsBloc>(() => _i618.FoodItemsBloc(
       getFoodItemsUseCase: gh<_i299.GetFoodItemsUseCase>()));
   return getIt;
 }

@@ -32,14 +32,14 @@ abstract class FoodItemCollectionReference
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return FoodItem.fromJson(snapshot.data()!);
+    return FoodItem.fromJson({'id': snapshot.id, ...?snapshot.data()});
   }
 
   static Map<String, Object?> toFirestore(
     FoodItem value,
     SetOptions? options,
   ) {
-    return value.toJson();
+    return {...value.toJson()}..remove('id');
   }
 
   @override
@@ -1572,6 +1572,7 @@ class FoodItemQueryDocumentSnapshot
 // **************************************************************************
 
 FoodItem _$FoodItemFromJson(Map<String, dynamic> json) => FoodItem(
+      id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       price: (json['price'] as num).toDouble(),
@@ -1580,6 +1581,7 @@ FoodItem _$FoodItemFromJson(Map<String, dynamic> json) => FoodItem(
     );
 
 const _$FoodItemFieldMap = <String, String>{
+  'id': 'id',
   'name': 'name',
   'description': 'description',
   'price': 'price',
@@ -1589,6 +1591,8 @@ const _$FoodItemFieldMap = <String, String>{
 
 // ignore: unused_element
 abstract class _$FoodItemPerFieldToJson {
+  // ignore: unused_element
+  static Object? id(String instance) => instance;
   // ignore: unused_element
   static Object? name(String instance) => instance;
   // ignore: unused_element
@@ -1602,6 +1606,7 @@ abstract class _$FoodItemPerFieldToJson {
 }
 
 Map<String, dynamic> _$FoodItemToJson(FoodItem instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'description': instance.description,
       'price': instance.price,

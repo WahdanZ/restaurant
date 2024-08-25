@@ -6,6 +6,7 @@ class FoodItemMapper extends Mapper<FoodItem, FoodItemEntity> {
   @override
   FoodItem mapFromEntity(FoodItemEntity type) {
     return FoodItem(
+      id: type.id,
       name: type.name,
       description: type.description,
       price: type.price,
@@ -22,7 +23,7 @@ class FoodItemMapper extends Mapper<FoodItem, FoodItemEntity> {
       price: type.price,
       imageUrl: type.imageUrl,
       category: type.category,
-      id: '',
+      id: type.id,
     );
   }
 }

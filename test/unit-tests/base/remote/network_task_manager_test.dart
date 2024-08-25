@@ -41,7 +41,7 @@ void main() {
 
       var isPending = true;
       resultFuture.then((_) => isPending = false);
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(isPending, isTrue);
 
       manager.unlock();
@@ -74,7 +74,7 @@ void main() {
       var isPending2 = true;
       resultFuture1.then((_) => isPending1 = false);
       resultFuture2.then((_) => isPending2 = false);
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(isPending1, isTrue);
       expect(isPending2, isTrue);
 

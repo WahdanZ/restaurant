@@ -6,6 +6,7 @@ import '../models/food_item.dart';
 
 abstract class FoodItemRemoteDataSource {
   Future<CustomResult<List<FoodItem>>> getFoodItems();
+  Future<CustomResult<FoodItem>> getFoodItemById(String id);
 }
 
 @LazySingleton(as: FoodItemRemoteDataSource)
@@ -20,7 +21,18 @@ class FoodItemFireStoreRemoteDataSourceImpl
     final task = FirebaseNetworkTask(() async {
       final querySnapshot = await foodItemCollectionRef.get();
       final foodItems = querySnapshot.docs;
-      return foodItems.map((foodItem) => foodItem.data).toList();
+      return foodItems.map((foodItem) {
+        return foodItem.data;
+      }).toList();
+    });
+    return networkTask.executeTask(task);
+  }
+
+  @override
+  Future<CustomResult<FoodItem>> getFoodItemById(String id) {
+    final task = FirebaseNetworkTask(() async {
+      final foodItem = await foodItemCollectionRef.doc(id).get();
+      return foodItem.data!;
     });
     return networkTask.executeTask(task);
   }

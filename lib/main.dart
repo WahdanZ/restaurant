@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:restaurant/features/food_items/presentation/screens/food_items_screen.dart';
+import 'package:restaurant/route/route.dart';
 
 import 'base/index.dart';
 import 'di/injector.dart';
@@ -28,9 +29,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return CupertinoApp.router(
       title: 'Flutter Demo',
-      home: HomePage(),
+      routerConfig: router,
     );
   }
 }

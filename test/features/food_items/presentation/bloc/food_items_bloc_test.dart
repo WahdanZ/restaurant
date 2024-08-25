@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:restaurant/base/index.dart';
 import 'package:restaurant/features/food_items/domain/entities/food_item_entity.dart';
-import 'package:restaurant/features/food_items/presentation/bloc/food_items_bloc.dart';
+import 'package:restaurant/features/food_items/presentation/bloc/food_items/food_items_bloc.dart';
 
 import '../../../../mock.dart';
 import '../../../../test_injection.dart';

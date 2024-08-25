@@ -25,6 +25,7 @@ void main() {
 
   final foodItems = [
     FoodItem(
+      id: '1',
       name: 'Pizza',
       description: 'Delicious cheese pizza',
       price: 9.99,
@@ -32,6 +33,7 @@ void main() {
       category: 'Main Course',
     ),
     FoodItem(
+      id: '2',
       name: 'Burger',
       description: 'Juicy beef burger',
       price: 7.99,
@@ -46,7 +48,7 @@ void main() {
       price: 9.99,
       imageUrl: 'url_to_image',
       category: 'Main Course',
-      id: '',
+      id: '1',
     ),
     const FoodItemEntity(
       name: 'Burger',
@@ -54,7 +56,7 @@ void main() {
       price: 7.99,
       imageUrl: 'url_to_image',
       category: 'Main Course',
-      id: '',
+      id: '2',
     ),
   ];
 
@@ -67,6 +69,41 @@ void main() {
 
       expect(result, equals(foodItemEntities));
       verify(() => mockRemoteDataSource.getFoodItems()).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+    test('should return failure when remote data source return failure',
+        () async {
+      when(() => mockRemoteDataSource.getFoodItems()).thenAnswer(
+          (_) async => CustomResult.failure(NetworkFailure.unknown()));
+
+      final result = (await repository.getFoodItems());
+
+      expect(result, isA<Failure>());
+      verify(() => mockRemoteDataSource.getFoodItems()).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+  });
+  // get food item by id
+  group('getFoodItemById', () {
+    test('should return food item from remote data source', () async {
+      when(() => mockRemoteDataSource.getFoodItemById('1'))
+          .thenAnswer((_) async => CustomResult.success(foodItems[0]));
+
+      final result = (await repository.getFoodItemById('1')).getOrNull();
+
+      expect(result, equals(foodItemEntities[0]));
+      verify(() => mockRemoteDataSource.getFoodItemById('1')).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+    test('should return failure when remote data source return failure',
+        () async {
+      when(() => mockRemoteDataSource.getFoodItemById('1')).thenAnswer(
+          (_) async => CustomResult.failure(NetworkFailure.unknown()));
+
+      final result = (await repository.getFoodItemById('1'));
+
+      expect(result, isA<Failure>());
+      verify(() => mockRemoteDataSource.getFoodItemById('1')).called(1);
       verifyNoMoreInteractions(mockRemoteDataSource);
     });
   });

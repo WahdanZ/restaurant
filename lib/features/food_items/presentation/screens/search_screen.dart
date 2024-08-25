@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restaurant/features/food_items/presentation/bloc/food_items_bloc.dart';
+import 'package:restaurant/features/food_items/presentation/bloc/food_items/food_items_bloc.dart';
 import 'package:restaurant/features/food_items/presentation/widgets/food_item_widget.dart';
 
 class CupertinoSearchView extends StatelessWidget {

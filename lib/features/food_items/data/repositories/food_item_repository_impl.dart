@@ -24,4 +24,11 @@ class FoodItemRepositoryImpl implements FoodItemRepository {
           .toList();
     });
   }
+
+  @override
+  Future<CustomResult<FoodItemEntity>> getFoodItemById(String id) {
+    return remoteDataSource
+        .getFoodItemById(id)
+        .map(foodItemMapper.mapFromModel);
+  }
 }
