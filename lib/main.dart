@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp.router(
-      title: 'Flutter Demo',
+      title: 'Restaurant',
       routerConfig: router,
     );
   }
