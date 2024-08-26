@@ -1,0 +1,105 @@
+name: Build, Lint, Release APK, and Deploy Web
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1
+
+      - name: Install Flutter SDK
+        run: echo yes | fvm use 3.22.2
+
+      - name: Install dependencies
+        run: fvm flutter pub get
+
+      - name: Run Linter
+        run: fvm flutter analyze
+
+      - name: Build APK
+        run: fvm flutter build apk --release
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Build Web
+        run: fvm flutter build web --release
+
+      - name: Upload Web Build as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: web-build
+          path: build/web
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-release.apk
+          path: .
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated release for ${{ github.ref }}.
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
+
+  deploy_web:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Web Build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Setup GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
+          publish_branch: gh-pages
