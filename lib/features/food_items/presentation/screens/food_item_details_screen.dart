@@ -43,7 +43,7 @@ class FoodItemDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     ClipRRect(
@@ -82,7 +82,7 @@ class FoodItemDetailsScreen extends StatelessWidget {
 
                     // Price of the food item
                     Text(
-                      '${foodItem.price.toStringAsFixed(2)}\€',
+                      '${foodItem.price.toStringAsFixed(2)}€',
                       style: const TextStyle(
                         fontSize: 22,
                         color: CupertinoColors.systemGreen,

@@ -67,7 +67,7 @@ class FoodItemWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${foodItem.price.toStringAsFixed(2)}\€', // Formatting the price for better UX
+                        '${foodItem.price.toStringAsFixed(2)}€', // Formatting the price for better UX
                         style: const TextStyle(
                           color: CupertinoColors.systemGreen,
                           fontWeight: FontWeight.w600,
