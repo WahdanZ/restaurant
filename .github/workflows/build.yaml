@@ -1,4 +1,4 @@
-name: Build, Release APK and Deploy Web
+name: Build, Lint, Release APK, and Deploy Web
 
 on:
   push:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Install dependencies
         run: fvm flutter pub get
+
+      - name: Run Linter
+        run: fvm flutter analyze
 
       - name: Build APK
         run: fvm flutter build apk --release
