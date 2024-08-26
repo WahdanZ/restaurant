@@ -40,7 +40,6 @@ class _TableReservationScreenState extends State<TableReservationScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CupertinoDatePicker(
-                  initialDateTime: DateTime.now(),
                   mode: CupertinoDatePickerMode.dateAndTime,
                   minimumDate: DateTime.now(), // Disable past dates and times
                   use24hFormat: true, // Use 24-hour format for time
