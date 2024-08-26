@@ -1,3 +1,5 @@
 {
-  "firebase_hosting": {}
+  "firebase_hosting": {
+    "deploymentHostingUrl": "https://restaurant-5b40a.web.app"
+  }
 }
