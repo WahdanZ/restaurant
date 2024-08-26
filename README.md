@@ -69,7 +69,7 @@ This collection holds the list of food items available in the restaurant.
 
 The project follows a clean architecture pattern with a feature-based folder structure.
     
-    ```
+```
 restaurant_app/
 ├── lib/
 │   ├── base/                     # Base classes and utilities
