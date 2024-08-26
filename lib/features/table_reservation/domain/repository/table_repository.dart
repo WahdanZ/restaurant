@@ -3,7 +3,7 @@ import 'package:restaurant/features/table_reservation/domain/entities/table_enti
 
 abstract class TableRepository {
   Future<CustomResult<List<TableEntity>>> getTablesForDate(DateTime date);
-  Future<CustomResult> reserveTable(
+  Future<CustomResult<bool>> reserveTable(
       String tableId, String username, DateTime date);
-  Future<CustomResult> cancelReservation(String reservationId);
+  Future<CustomResult<bool>> cancelReservation(String reservationId);
 }

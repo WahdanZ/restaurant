@@ -8,8 +8,10 @@ class TableEntity with _$TableEntity {
     required String id,
     required String name,
     required int chairs,
-    required String status,
+    required TableStatus status,
     String? reservationBy,
     String? reservationId,
   }) = _TableEntity;
 }
+
+enum TableStatus { available, reserved, reservedByMe }

@@ -19,7 +19,7 @@ mixin _$TableEntity {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get chairs => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
+  TableStatus get status => throw _privateConstructorUsedError;
   String? get reservationBy => throw _privateConstructorUsedError;
   String? get reservationId => throw _privateConstructorUsedError;
 
@@ -38,7 +38,7 @@ abstract class $TableEntityCopyWith<$Res> {
       {String id,
       String name,
       int chairs,
-      String status,
+      TableStatus status,
       String? reservationBy,
       String? reservationId});
 }
@@ -79,7 +79,7 @@ class _$TableEntityCopyWithImpl<$Res, $Val extends TableEntity>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as TableStatus,
       reservationBy: freezed == reservationBy
           ? _value.reservationBy
           : reservationBy // ignore: cast_nullable_to_non_nullable
@@ -104,7 +104,7 @@ abstract class _$$TableEntityImplCopyWith<$Res>
       {String id,
       String name,
       int chairs,
-      String status,
+      TableStatus status,
       String? reservationBy,
       String? reservationId});
 }
@@ -143,7 +143,7 @@ class __$$TableEntityImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as TableStatus,
       reservationBy: freezed == reservationBy
           ? _value.reservationBy
           : reservationBy // ignore: cast_nullable_to_non_nullable
@@ -174,7 +174,7 @@ class _$TableEntityImpl implements _TableEntity {
   @override
   final int chairs;
   @override
-  final String status;
+  final TableStatus status;
   @override
   final String? reservationBy;
   @override
@@ -216,7 +216,7 @@ abstract class _TableEntity implements TableEntity {
       {required final String id,
       required final String name,
       required final int chairs,
-      required final String status,
+      required final TableStatus status,
       final String? reservationBy,
       final String? reservationId}) = _$TableEntityImpl;
 
@@ -227,7 +227,7 @@ abstract class _TableEntity implements TableEntity {
   @override
   int get chairs;
   @override
-  String get status;
+  TableStatus get status;
   @override
   String? get reservationBy;
   @override

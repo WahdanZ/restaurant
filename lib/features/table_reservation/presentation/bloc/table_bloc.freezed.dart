@@ -16,29 +16,28 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TableEvent {
-  DateTime get date => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DateTime date) fetchTables,
-    required TResult Function(String tableId, String username, DateTime date)
+    required TResult Function(TableEntity table, String username, DateTime date)
         reserveTable,
-    required TResult Function(String tableId, DateTime date) cancelReservation,
+    required TResult Function(String reservationId) cancelReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DateTime date)? fetchTables,
-    TResult? Function(String tableId, String username, DateTime date)?
+    TResult? Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult? Function(String tableId, DateTime date)? cancelReservation,
+    TResult? Function(String reservationId)? cancelReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DateTime date)? fetchTables,
-    TResult Function(String tableId, String username, DateTime date)?
+    TResult Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult Function(String tableId, DateTime date)? cancelReservation,
+    TResult Function(String reservationId)? cancelReservation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -64,10 +63,6 @@ mixin _$TableEvent {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $TableEventCopyWith<TableEvent> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -75,8 +70,6 @@ abstract class $TableEventCopyWith<$Res> {
   factory $TableEventCopyWith(
           TableEvent value, $Res Function(TableEvent) then) =
       _$TableEventCopyWithImpl<$Res, TableEvent>;
-  @useResult
-  $Res call({DateTime date});
 }
 
 /// @nodoc
@@ -88,28 +81,13 @@ class _$TableEventCopyWithImpl<$Res, $Val extends TableEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? date = null,
-  }) {
-    return _then(_value.copyWith(
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$FetchTablesImplCopyWith<$Res>
-    implements $TableEventCopyWith<$Res> {
+abstract class _$$FetchTablesImplCopyWith<$Res> {
   factory _$$FetchTablesImplCopyWith(
           _$FetchTablesImpl value, $Res Function(_$FetchTablesImpl) then) =
       __$$FetchTablesImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({DateTime date});
 }
@@ -170,9 +148,9 @@ class _$FetchTablesImpl implements FetchTables {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DateTime date) fetchTables,
-    required TResult Function(String tableId, String username, DateTime date)
+    required TResult Function(TableEntity table, String username, DateTime date)
         reserveTable,
-    required TResult Function(String tableId, DateTime date) cancelReservation,
+    required TResult Function(String reservationId) cancelReservation,
   }) {
     return fetchTables(date);
   }
@@ -181,9 +159,9 @@ class _$FetchTablesImpl implements FetchTables {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DateTime date)? fetchTables,
-    TResult? Function(String tableId, String username, DateTime date)?
+    TResult? Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult? Function(String tableId, DateTime date)? cancelReservation,
+    TResult? Function(String reservationId)? cancelReservation,
   }) {
     return fetchTables?.call(date);
   }
@@ -192,9 +170,9 @@ class _$FetchTablesImpl implements FetchTables {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DateTime date)? fetchTables,
-    TResult Function(String tableId, String username, DateTime date)?
+    TResult Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult Function(String tableId, DateTime date)? cancelReservation,
+    TResult Function(String reservationId)? cancelReservation,
     required TResult orElse(),
   }) {
     if (fetchTables != null) {
@@ -241,23 +219,21 @@ class _$FetchTablesImpl implements FetchTables {
 abstract class FetchTables implements TableEvent {
   const factory FetchTables(final DateTime date) = _$FetchTablesImpl;
 
-  @override
   DateTime get date;
-  @override
   @JsonKey(ignore: true)
   _$$FetchTablesImplCopyWith<_$FetchTablesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ReserveTableImplCopyWith<$Res>
-    implements $TableEventCopyWith<$Res> {
+abstract class _$$ReserveTableImplCopyWith<$Res> {
   factory _$$ReserveTableImplCopyWith(
           _$ReserveTableImpl value, $Res Function(_$ReserveTableImpl) then) =
       __$$ReserveTableImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String tableId, String username, DateTime date});
+  $Res call({TableEntity table, String username, DateTime date});
+
+  $TableEntityCopyWith<$Res> get table;
 }
 
 /// @nodoc
@@ -271,34 +247,43 @@ class __$$ReserveTableImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tableId = null,
+    Object? table = null,
     Object? username = null,
     Object? date = null,
   }) {
     return _then(_$ReserveTableImpl(
-      null == tableId
-          ? _value.tableId
-          : tableId // ignore: cast_nullable_to_non_nullable
-              as String,
-      null == username
+      table: null == table
+          ? _value.table
+          : table // ignore: cast_nullable_to_non_nullable
+              as TableEntity,
+      username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      null == date
+      date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $TableEntityCopyWith<$Res> get table {
+    return $TableEntityCopyWith<$Res>(_value.table, (value) {
+      return _then(_value.copyWith(table: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$ReserveTableImpl implements ReserveTable {
-  const _$ReserveTableImpl(this.tableId, this.username, this.date);
+  const _$ReserveTableImpl(
+      {required this.table, required this.username, required this.date});
 
   @override
-  final String tableId;
+  final TableEntity table;
   @override
   final String username;
   @override
@@ -306,7 +291,7 @@ class _$ReserveTableImpl implements ReserveTable {
 
   @override
   String toString() {
-    return 'TableEvent.reserveTable(tableId: $tableId, username: $username, date: $date)';
+    return 'TableEvent.reserveTable(table: $table, username: $username, date: $date)';
   }
 
   @override
@@ -314,14 +299,14 @@ class _$ReserveTableImpl implements ReserveTable {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ReserveTableImpl &&
-            (identical(other.tableId, tableId) || other.tableId == tableId) &&
+            (identical(other.table, table) || other.table == table) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.date, date) || other.date == date));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, tableId, username, date);
+  int get hashCode => Object.hash(runtimeType, table, username, date);
 
   @JsonKey(ignore: true)
   @override
@@ -333,35 +318,35 @@ class _$ReserveTableImpl implements ReserveTable {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DateTime date) fetchTables,
-    required TResult Function(String tableId, String username, DateTime date)
+    required TResult Function(TableEntity table, String username, DateTime date)
         reserveTable,
-    required TResult Function(String tableId, DateTime date) cancelReservation,
+    required TResult Function(String reservationId) cancelReservation,
   }) {
-    return reserveTable(tableId, username, date);
+    return reserveTable(table, username, date);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DateTime date)? fetchTables,
-    TResult? Function(String tableId, String username, DateTime date)?
+    TResult? Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult? Function(String tableId, DateTime date)? cancelReservation,
+    TResult? Function(String reservationId)? cancelReservation,
   }) {
-    return reserveTable?.call(tableId, username, date);
+    return reserveTable?.call(table, username, date);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DateTime date)? fetchTables,
-    TResult Function(String tableId, String username, DateTime date)?
+    TResult Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult Function(String tableId, DateTime date)? cancelReservation,
+    TResult Function(String reservationId)? cancelReservation,
     required TResult orElse(),
   }) {
     if (reserveTable != null) {
-      return reserveTable(tableId, username, date);
+      return reserveTable(table, username, date);
     }
     return orElse();
   }
@@ -403,28 +388,25 @@ class _$ReserveTableImpl implements ReserveTable {
 
 abstract class ReserveTable implements TableEvent {
   const factory ReserveTable(
-          final String tableId, final String username, final DateTime date) =
-      _$ReserveTableImpl;
+      {required final TableEntity table,
+      required final String username,
+      required final DateTime date}) = _$ReserveTableImpl;
 
-  String get tableId;
+  TableEntity get table;
   String get username;
-  @override
   DateTime get date;
-  @override
   @JsonKey(ignore: true)
   _$$ReserveTableImplCopyWith<_$ReserveTableImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CancelReservationImplCopyWith<$Res>
-    implements $TableEventCopyWith<$Res> {
+abstract class _$$CancelReservationImplCopyWith<$Res> {
   factory _$$CancelReservationImplCopyWith(_$CancelReservationImpl value,
           $Res Function(_$CancelReservationImpl) then) =
       __$$CancelReservationImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String tableId, DateTime date});
+  $Res call({String reservationId});
 }
 
 /// @nodoc
@@ -438,18 +420,13 @@ class __$$CancelReservationImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tableId = null,
-    Object? date = null,
+    Object? reservationId = null,
   }) {
     return _then(_$CancelReservationImpl(
-      null == tableId
-          ? _value.tableId
-          : tableId // ignore: cast_nullable_to_non_nullable
+      null == reservationId
+          ? _value.reservationId
+          : reservationId // ignore: cast_nullable_to_non_nullable
               as String,
-      null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -457,16 +434,14 @@ class __$$CancelReservationImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CancelReservationImpl implements CancelReservation {
-  const _$CancelReservationImpl(this.tableId, this.date);
+  const _$CancelReservationImpl(this.reservationId);
 
   @override
-  final String tableId;
-  @override
-  final DateTime date;
+  final String reservationId;
 
   @override
   String toString() {
-    return 'TableEvent.cancelReservation(tableId: $tableId, date: $date)';
+    return 'TableEvent.cancelReservation(reservationId: $reservationId)';
   }
 
   @override
@@ -474,12 +449,12 @@ class _$CancelReservationImpl implements CancelReservation {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CancelReservationImpl &&
-            (identical(other.tableId, tableId) || other.tableId == tableId) &&
-            (identical(other.date, date) || other.date == date));
+            (identical(other.reservationId, reservationId) ||
+                other.reservationId == reservationId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, tableId, date);
+  int get hashCode => Object.hash(runtimeType, reservationId);
 
   @JsonKey(ignore: true)
   @override
@@ -492,35 +467,35 @@ class _$CancelReservationImpl implements CancelReservation {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DateTime date) fetchTables,
-    required TResult Function(String tableId, String username, DateTime date)
+    required TResult Function(TableEntity table, String username, DateTime date)
         reserveTable,
-    required TResult Function(String tableId, DateTime date) cancelReservation,
+    required TResult Function(String reservationId) cancelReservation,
   }) {
-    return cancelReservation(tableId, date);
+    return cancelReservation(reservationId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DateTime date)? fetchTables,
-    TResult? Function(String tableId, String username, DateTime date)?
+    TResult? Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult? Function(String tableId, DateTime date)? cancelReservation,
+    TResult? Function(String reservationId)? cancelReservation,
   }) {
-    return cancelReservation?.call(tableId, date);
+    return cancelReservation?.call(reservationId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DateTime date)? fetchTables,
-    TResult Function(String tableId, String username, DateTime date)?
+    TResult Function(TableEntity table, String username, DateTime date)?
         reserveTable,
-    TResult Function(String tableId, DateTime date)? cancelReservation,
+    TResult Function(String reservationId)? cancelReservation,
     required TResult orElse(),
   }) {
     if (cancelReservation != null) {
-      return cancelReservation(tableId, date);
+      return cancelReservation(reservationId);
     }
     return orElse();
   }
@@ -561,13 +536,10 @@ class _$CancelReservationImpl implements CancelReservation {
 }
 
 abstract class CancelReservation implements TableEvent {
-  const factory CancelReservation(final String tableId, final DateTime date) =
+  const factory CancelReservation(final String reservationId) =
       _$CancelReservationImpl;
 
-  String get tableId;
-  @override
-  DateTime get date;
-  @override
+  String get reservationId;
   @JsonKey(ignore: true)
   _$$CancelReservationImplCopyWith<_$CancelReservationImpl> get copyWith =>
       throw _privateConstructorUsedError;

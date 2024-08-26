@@ -24,7 +24,6 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // text is seeding if isSeeding is true
               if (isSeeding) ...[
                 const CupertinoActivityIndicator(),
                 const SizedBox(height: 16),
@@ -34,10 +33,11 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                 onPressed: isSeeding
                     ? null
                     : () async {
+                        setState(() {
+                          isSeeding = true;
+                        });
                         await seedData.seedFoodItems();
                         if (mounted) {
-                          _showSnackBar(context, 'Seeded 50 Food Items!');
-
                           setState(() {
                             isSeeding = false;
                           });
@@ -55,7 +55,9 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                         });
                         await seedData.seedTables();
                         if (mounted) {
-                          _showSnackBar(context, 'Seeded 10 Tables!');
+                          setState(() {
+                            isSeeding = false;
+                          });
                         }
                       },
                 child: const Text('Seed Tables'),
@@ -69,7 +71,11 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                           isSeeding = true;
                         });
                         await seedData.seedTableReservations();
-                        _showSnackBar(context, 'Seeded 30 Reservations!');
+                        if (mounted) {
+                          setState(() {
+                            isSeeding = false;
+                          });
+                        }
                       },
                 child: const Text('Seed Reservations'),
               ),
@@ -83,7 +89,11 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
                           isSeeding = true;
                         });
                         await seedData.resetAndSeedData();
-                        _showSnackBar(context, 'All Data Reset and Seeded!');
+                        if (mounted) {
+                          setState(() {
+                            isSeeding = false;
+                          });
+                        }
                       },
                 child: const Text('Reset and Seed All Data'),
               ),
@@ -92,11 +102,5 @@ class _SeedDataScreenState extends State<SeedDataScreen> {
         ),
       ),
     );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    setState(() {
-      isSeeding = false;
-    });
   }
 }

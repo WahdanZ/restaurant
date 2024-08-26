@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
-import 'package:restaurant/features/food_items/presentation/screens/food_items_screen.dart';
-import 'package:restaurant/features/table_reservation/presentation/pages/table_reservation_screen.dart';
 import 'package:restaurant/route/route.dart';
 
 import 'base/index.dart';
@@ -33,44 +31,6 @@ class MyApp extends StatelessWidget {
     return CupertinoApp.router(
       title: 'Flutter Demo',
       routerConfig: router,
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            label: 'Food Items',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.calendar),
-            label: 'Reservation',
-          ),
-        ],
-      ),
-      tabBuilder: (context, index) {
-        switch (index) {
-          case 0:
-            return CupertinoTabView(
-              builder: (context) => const FoodItemsScreen(),
-            );
-          case 1:
-            return CupertinoTabView(
-              builder: (context) => const TableReservationScreen(),
-            );
-          default:
-            return CupertinoTabView(
-              builder: (context) => const FoodItemsScreen(),
-            );
-        }
-      },
     );
   }
 }

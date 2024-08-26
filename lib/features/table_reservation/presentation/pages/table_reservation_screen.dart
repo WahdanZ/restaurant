@@ -40,6 +40,7 @@ class _TableReservationScreenState extends State<TableReservationScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CupertinoDatePicker(
+                  initialDateTime: DateTime.now(),
                   mode: CupertinoDatePickerMode.dateAndTime,
                   minimumDate: DateTime.now(), // Disable past dates and times
                   use24hFormat: true, // Use 24-hour format for time
@@ -59,7 +60,8 @@ class _TableReservationScreenState extends State<TableReservationScreen> {
                 logger.i(
                     'Navigating to tables with selected date & time: $selectedDateTime');
 
-                context.go('/tables', extra: selectedDateTime);
+                GoRouter.of(context)
+                    .go('/reservation/tables/$selectedDateTime');
               },
             ),
           ],
