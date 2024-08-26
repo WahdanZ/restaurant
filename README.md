@@ -115,7 +115,9 @@ restaurant_app/
 │   │   ├── table_reservation/    # data , domain and presentation tests for table reservation feature
 │   └── test_injection.dart       # Test dependency injection setup
 ├── pubspec.yaml                  # Dart dependencies
-    ```
+    
+```
+
 ### Key Features:
 - **Authentication**: Anonymous user authentication via Firebase.
 - **Food Listing**: A list of food items fetched from Firestore.
