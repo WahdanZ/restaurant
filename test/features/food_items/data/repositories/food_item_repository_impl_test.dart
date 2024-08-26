@@ -74,7 +74,7 @@ void main() {
     test('should return failure when remote data source return failure',
         () async {
       when(() => mockRemoteDataSource.getFoodItems()).thenAnswer(
-          (_) async => CustomResult.failure(NetworkFailure.unknown()));
+          (_) async => CustomResult.failure(const NetworkFailure.unknown()));
 
       final result = (await repository.getFoodItems());
 
@@ -98,7 +98,7 @@ void main() {
     test('should return failure when remote data source return failure',
         () async {
       when(() => mockRemoteDataSource.getFoodItemById('1')).thenAnswer(
-          (_) async => CustomResult.failure(NetworkFailure.unknown()));
+          (_) async => CustomResult.failure(const NetworkFailure.unknown()));
 
       final result = (await repository.getFoodItemById('1'));
 

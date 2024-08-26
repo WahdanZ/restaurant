@@ -12,7 +12,7 @@ main() {
   late MockGetFoodItemDetailsUseCase mockGetFoodItemDetailsUseCase;
   late FoodItemsDetailsBloc foodItemsDetailsBloc;
 
-  final foodItem = const FoodItemEntity(
+  const foodItem = FoodItemEntity(
     id: '1',
     name: 'Pizza',
     description: 'Delicious cheese pizza',
@@ -43,7 +43,7 @@ main() {
         bloc.add(const FoodItemsDetailsEvent.getFoodItemDetails('1')),
     expect: () => [
       const FoodItemsDetailsState.loading(),
-      FoodItemsDetailsState.loaded(foodItem),
+      const FoodItemsDetailsState.loaded(foodItem),
     ],
     verify: (_) {
       verify(() => mockGetFoodItemDetailsUseCase.execute(

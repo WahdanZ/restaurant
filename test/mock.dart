@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:restaurant/features/food_items/data/data_source/food_item_remote_data_source.dart';
 import 'package:restaurant/features/food_items/data/models/food_item.dart';
+import 'package:restaurant/features/food_items/data/remote/data_source/food_item_remote_data_source.dart';
 import 'package:restaurant/features/food_items/domain/repositories/food_item_repository.dart';
 import 'package:restaurant/features/food_items/domain/usecases/get_food_item_details.dart';
 import 'package:restaurant/features/food_items/domain/usecases/get_food_items_use_case.dart';

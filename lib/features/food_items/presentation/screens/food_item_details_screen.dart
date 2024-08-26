@@ -23,7 +23,7 @@ class FoodItemDetailsScreen extends StatelessWidget {
             }
           },
         ),
-        middle: Text('Food Item Details'),
+        middle: const Text('Food Item Details'),
       ),
       child: BlocProvider(
         create: (context) => inject<FoodItemsDetailsBloc>()

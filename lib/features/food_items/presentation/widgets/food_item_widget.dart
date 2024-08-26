@@ -11,7 +11,7 @@ class FoodItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.go('/food_items/${foodItem.id}');
+        context.go('/food_items/details/${foodItem.id}');
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
