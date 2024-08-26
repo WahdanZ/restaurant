@@ -14,38 +14,70 @@ class FoodItemWidget extends StatelessWidget {
         context.go('/food_items/details/${foodItem.id}');
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          child: Column(
-            children: [
-              Expanded(
-                child: Image.network(
-                  foodItem.imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      foodItem.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+        borderRadius: BorderRadius.circular(12),
+        child: CupertinoPopupSurface(
+          isSurfacePainted: true,
+          child: Container(
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Image.network(
+                          foodItem.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Center(
+                            child: Icon(
+                              CupertinoIcons.photo,
+                              size: 50,
+                              color: CupertinoColors.systemGrey,
+                            ),
+                          ),
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return const Center(
+                                child: CupertinoActivityIndicator(),
+                              );
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                    Text(
-                      foodItem.price.toString(),
-                      style: const TextStyle(
-                        color: CupertinoColors.systemGreen,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        foodItem.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${foodItem.price.toStringAsFixed(2)}\€', // Formatting the price for better UX
+                        style: const TextStyle(
+                          color: CupertinoColors.systemGreen,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

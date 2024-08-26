@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restaurant/di/injector.dart';
@@ -7,6 +6,7 @@ import 'package:restaurant/features/food_items/presentation/bloc/food_item_detai
 
 class FoodItemDetailsScreen extends StatelessWidget {
   final String id;
+
   const FoodItemDetailsScreen({super.key, required this.id});
 
   @override
@@ -32,25 +32,82 @@ class FoodItemDetailsScreen extends StatelessWidget {
           builder: (context, state) {
             return state.when(
               initial: () => const Center(
-                child: CircularProgressIndicator(),
+                child: CupertinoActivityIndicator(),
               ),
               loading: () => const Center(
-                child: CircularProgressIndicator(),
+                child: CupertinoActivityIndicator(),
               ),
-              loaded: (foodItem) => Center(
+              loaded: (foodItem) => SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // image
-                    Image.network(foodItem.imageUrl,
-                        width: 200, height: 200, fit: BoxFit.cover),
-                    Text(foodItem.name),
-                    Text(foodItem.price.toString()),
-                    Text(foodItem.description),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        foodItem.imageUrl,
+                        width: double.infinity,
+                        height: 250,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(
+                          CupertinoIcons.photo,
+                          size: 100,
+                          color: CupertinoColors.systemGrey,
+                        ),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(
+                            child: CupertinoActivityIndicator(),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Name of the food item
+                    Text(
+                      foodItem.name,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Price of the food item
+                    Text(
+                      '${foodItem.price.toStringAsFixed(2)}\€',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: CupertinoColors.systemGreen,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Description of the food item
+                    Text(
+                      foodItem.description,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
               error: () => const Center(
-                child: Text('Error'),
+                child: Text(
+                  'Failed to load food item details',
+                  style: TextStyle(color: CupertinoColors.systemRed),
+                ),
               ),
             );
           },
