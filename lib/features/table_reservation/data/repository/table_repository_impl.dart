@@ -25,18 +25,21 @@ class TableRepositoryImpl implements TableRepository {
       final currentUser = await _getCurrentUser();
       final reservations = await _getReservationsForDate(date);
       final tables = await _getTables();
+      if (tables.isFailure) {
+        return CustomResult.failure(tables.getErrorOrNull()!);
+      }
 
       return CustomResult.success(
-          _mapTablesToEntities(tables, reservations, currentUser));
+          _mapTablesToEntities(tables.getOrNull()!, reservations, currentUser));
     } catch (e) {
       return CustomResult.failure(
           const NetworkFailure.api(message: 'Failed to get tables'));
     }
   }
 
-  Future<List<TableModel>> _getTables() async {
+  Future<CustomResult<List<TableModel>>> _getTables() async {
     final tablesResult = await remoteDataSource.getTables();
-    return tablesResult.getOrNull() ?? <TableModel>[];
+    return tablesResult;
   }
 
   Future<List<ReservationModel>> _getReservationsForDate(DateTime date) async {
@@ -106,17 +109,19 @@ class TableRepositoryImpl implements TableRepository {
   ) async {
     try {
       final user = await _getCurrentUser();
-      await remoteDataSource.reserveTable(
-        tableId: tableId,
-        userId: user.uid,
-        username: username,
-        startDate: date,
-        endDate: date.add(const Duration(hours: 1)),
-      );
-      return CustomResult.success(true);
+      final result = await remoteDataSource
+          .reserveTable(
+            tableId: tableId,
+            userId: user.uid,
+            username: username,
+            startDate: date,
+            endDate: date.add(const Duration(hours: 1)),
+          )
+          .map((value) => true);
+      return result;
     } catch (e) {
       return CustomResult.failure(
-          const NetworkFailure.api(message: 'Failed to reserve table'));
+          const NetworkFailure.api(message: 'Failed to reserve table '));
     }
   }
 

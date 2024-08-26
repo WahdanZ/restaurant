@@ -60,7 +60,7 @@ class TableBloc extends Bloc<TableEvent, TableState> {
         params: CancelReserveTableUseCaseParams(event.reservationId));
     result.when(
       success: (success) {
-        emit(const TableState.initial());
+        emit(const TableState.cancelled('Reservation cancelled'));
       },
       failure: (failure) {
         emit(TableState.error(failure.message));
